@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>From Prompts to Power User: My Claude Deep Dive as a Software Developer</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,400&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet"/>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink: #1a1a1a;
+    --ink-muted: #555;
+    --ink-faint: #888;
+    --page: #faf9f6;
+    --accent: #c0392b;
+    --accent2: #2c3e6b;
+    --accent3: #1a7f5e;
+    --rule: #ddd;
+    --code-bg: #f0ede6;
+    --tag-bg: #e8f0fb;
+    --tag-text: #2c3e6b;
+    --card-bg: #fff;
+    --card-border: #e0ddd6;
+  }
+
+  body {
+    font-family: 'Source Serif 4', Georgia, serif;
+    background: var(--page);
+    color: var(--ink);
+    line-height: 1.8;
+    font-size: 18px;
+    padding: 0;
+  }
+
+  /* HERO */
+  .hero {
+    background: var(--accent2);
+    color: #fff;
+    padding: 80px 40px 60px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 40px,
+      rgba(255,255,255,0.03) 40px,
+      rgba(255,255,255,0.03) 80px
+    );
+  }
+  .hero-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.6);
+    margin-bottom: 20px;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(32px, 5vw, 60px);
+    font-weight: 900;
+    line-height: 1.15;
+    max-width: 840px;
+    margin: 0 auto 24px;
+    position: relative;
+  }
+  .hero h1 em {
+    font-style: italic;
+    color: #f9ca74;
+  }
+  .hero-sub {
+    font-size: 18px;
+    color: rgba(255,255,255,0.75);
+    max-width: 560px;
+    margin: 0 auto 36px;
+    font-weight: 300;
+  }
+  .hero-meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: rgba(255,255,255,0.5);
+    display: flex;
+    gap: 24px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .hero-meta span::before { content: '— '; }
+
+  /* LAYOUT */
+  .container {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 64px 32px;
+  }
+
+  /* TOC */
+  .toc {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-left: 4px solid var(--accent2);
+    padding: 28px 32px;
+    margin: 0 0 56px;
+    border-radius: 4px;
+  }
+  .toc-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 16px;
+  }
+  .toc ol {
+    padding-left: 20px;
+  }
+  .toc li {
+    font-size: 15px;
+    margin-bottom: 8px;
+    color: var(--accent2);
+    font-family: 'Source Serif 4', serif;
+  }
+  .toc li a {
+    color: var(--accent2);
+    text-decoration: none;
+  }
+  .toc li a:hover { text-decoration: underline; }
+
+  /* SECTIONS */
+  .section { margin-bottom: 72px; }
+
+  .section-number {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(26px, 3.5vw, 36px);
+    font-weight: 700;
+    line-height: 1.25;
+    color: var(--ink);
+    margin-bottom: 20px;
+  }
+
+  h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    margin: 32px 0 12px;
+    color: var(--ink);
+  }
+
+  p { margin-bottom: 20px; }
+
+  /* DIVIDER */
+  .divider {
+    border: none;
+    border-top: 1px solid var(--rule);
+    margin: 56px 0;
+  }
+
+  /* CALLOUT */
+  .callout {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-left: 4px solid var(--accent);
+    padding: 20px 24px;
+    margin: 28px 0;
+    border-radius: 0 4px 4px 0;
+    font-style: italic;
+    color: var(--ink-muted);
+    font-size: 17px;
+  }
+  .callout strong { color: var(--ink); font-style: normal; }
+
+  /* FEATURE CARDS */
+  .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin: 28px 0;
+  }
+  .feature-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 8px;
+    padding: 20px;
+  }
+  .feature-card-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    margin-bottom: 12px;
+  }
+  .feature-card h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .feature-card p {
+    font-size: 14px;
+    color: var(--ink-muted);
+    margin: 0;
+    line-height: 1.6;
+  }
+  .ic-blue  { background: #dce9fb; }
+  .ic-green { background: #d4f0e4; }
+  .ic-amber { background: #fdefd4; }
+  .ic-red   { background: #fde0dd; }
+  .ic-purple{ background: #ede8fb; }
+  .ic-teal  { background: #d4f0f0; }
+
+  /* CODE */
+  code {
+    font-family: 'JetBrains Mono', monospace;
+    background: var(--code-bg);
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-size: 14px;
+    color: var(--accent);
+  }
+
+  pre {
+    background: #1e2030;
+    color: #cdd6f4;
+    padding: 24px;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    line-height: 1.7;
+    margin: 24px 0;
+  }
+  pre code { background: none; padding: 0; color: inherit; font-size: 14px; }
+
+  /* TAGS */
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 20px 0;
+  }
+  .tag {
+    background: var(--tag-bg);
+    color: var(--tag-text);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    border: 1px solid rgba(44,62,107,0.15);
+  }
+
+  /* QUOTE */
+  blockquote {
+    border-left: 3px solid var(--accent3);
+    padding: 4px 0 4px 24px;
+    margin: 28px 0;
+    font-size: 20px;
+    font-style: italic;
+    color: var(--ink-muted);
+    line-height: 1.6;
+  }
+
+  /* STEP LIST */
+  .step-list { list-style: none; padding: 0; margin: 20px 0; }
+  .step-list li {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    margin-bottom: 16px;
+    font-size: 16px;
+  }
+  .step-num {
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+    background: var(--accent2);
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 600;
+    margin-top: 2px;
+  }
+
+  /* SKILL FILE */
+  .skill-file {
+    background: #1e2030;
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 28px 0;
+  }
+  .skill-file-header {
+    background: #2a2d48;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .dot { width: 12px; height: 12px; border-radius: 50%; }
+  .dot-red   { background: #ff5f57; }
+  .dot-amber { background: #ffbd2e; }
+  .dot-green { background: #28c840; }
+  .skill-file-name {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: rgba(255,255,255,0.6);
+    margin-left: 8px;
+  }
+  .skill-file-body {
+    padding: 20px 24px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: #cdd6f4;
+    line-height: 1.8;
+  }
+  .skill-file-body .key { color: #89b4fa; }
+  .skill-file-body .val { color: #a6e3a1; }
+  .skill-file-body .comment { color: #585b70; }
+
+  /* CTA */
+  .cta-box {
+    background: var(--accent2);
+    color: #fff;
+    padding: 40px;
+    border-radius: 12px;
+    text-align: center;
+    margin: 40px 0;
+  }
+  .cta-box h3 {
+    font-family: 'Playfair Display', serif;
+    color: #fff;
+    font-size: 26px;
+    margin-bottom: 12px;
+  }
+  .cta-box p {
+    color: rgba(255,255,255,0.75);
+    font-size: 16px;
+    margin-bottom: 0;
+  }
+
+  /* FOOTER */
+  .post-footer {
+    border-top: 1px solid var(--rule);
+    padding-top: 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: gap;
+    gap: 20px;
+    font-size: 14px;
+    color: var(--ink-faint);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .highlight-box {
+    background: #f0f4ff;
+    border: 1px solid #d0d8ef;
+    border-radius: 8px;
+    padding: 20px 24px;
+    margin: 24px 0;
+    font-size: 16px;
+    line-height: 1.7;
+  }
+  .highlight-box strong { color: var(--accent2); }
+
+  @media (max-width: 600px) {
+    .hero { padding: 60px 24px 48px; }
+    .container { padding: 48px 20px; }
+    .cta-box { padding: 28px 20px; }
+    .post-footer { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<header class="hero">
+  <p class="hero-eyebrow">Medium Blog Post · Software Engineering · AI Tools</p>
+  <h1>From Prompts to Power User:<br/><em>Everything I Learned About Claude</em></h1>
+  <p class="hero-sub">Six features that changed how I think about AI-assisted development — a software developer's honest deep dive.</p>
+  <div class="hero-meta">
+    <span>10 min read</span>
+    <span>Lakshay · Software Developer</span>
+    <span>April 2026</span>
+  </div>
+</header>
+
+<main class="container">
+
+  <!-- INTRO -->
+  <section class="section">
+    <p>
+      Let me be honest with you. When I first started using Claude, I was doing what most developers do — treating it like a slightly smarter search engine. Type a question, read the answer, move on.
+    </p>
+    <p>
+      Then I went deep. And I mean <em>really</em> deep. Over the past few weeks I systematically explored six distinct capability areas of Claude, and I'm not exaggerating when I say it fundamentally rewired how I approach my work as a software developer at an IT company.
+    </p>
+    <blockquote>
+      Claude isn't just an AI assistant. It's a platform. And like any platform, the people who take time to understand it properly unlock capabilities that everyone else doesn't even know exist.
+    </blockquote>
+    <p>Here's everything I learned — organized, opinionated, and genuinely useful.</p>
+
+    <div class="toc">
+      <p class="toc-label">Contents</p>
+      <ol>
+        <li><a href="#fundamentals">Claude Fundamentals & the Basic Interface</a></li>
+        <li><a href="#thinking">Extended Thinking: The YouTube Metadata Use Case</a></li>
+        <li><a href="#projects">Working with Claude Projects</a></li>
+        <li><a href="#artifacts">Mastering Artifacts: Websites, GIFs, Docs & CSV</a></li>
+        <li><a href="#skills">Claude Skills: Finding & Using Existing Skills</a></li>
+        <li><a href="#custom-skill">Building Your Own Custom SKILL.md</a></li>
+      </ol>
+    </div>
+  </section>
+
+  <hr class="divider"/>
+
+  <!-- SECTION 1: FUNDAMENTALS -->
+  <section class="section" id="fundamentals">
+    <span class="section-number">01 / 06</span>
+    <h2>Claude Fundamentals & the Basic Interface</h2>
+
+    <p>Before building anything sophisticated, I forced myself to slow down and actually understand the foundations. This turned out to be the highest-ROI thing I did.</p>
+
+    <h3>The Model Family</h3>
+    <p>
+      Claude isn't one thing — it's a family. As of today, there's <strong>Claude Opus 4.6</strong> (maximum intelligence, best for complex reasoning), <strong>Claude Sonnet 4.6</strong> (the sweet spot for most tasks — this is what powers Claude.ai by default), and <strong>Claude Haiku 4.5</strong> (blazing fast, great for high-volume tasks via the API).
+    </p>
+
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="feature-card-icon ic-purple">🧠</div>
+        <h4>Opus 4.6</h4>
+        <p>Maximum reasoning. Best for architecture decisions, complex analysis, and nuanced tasks.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-card-icon ic-blue">⚡</div>
+        <h4>Sonnet 4.6</h4>
+        <p>Default model. Exceptional balance of capability and speed. Daily driver for most devs.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-card-icon ic-green">🚀</div>
+        <h4>Haiku 4.5</h4>
+        <p>Speed optimized. Best for API-heavy apps needing fast, affordable responses.</p>
+      </div>
+    </div>
+
+    <h3>Prompt Engineering That Actually Works</h3>
+    <p>After studying Anthropic's own prompting documentation, the patterns that moved the needle most for me as a developer:</p>
+    <ul class="step-list">
+      <li><span class="step-num">1</span><div><strong>Be specific about format.</strong> Don't say "explain this." Say "explain this in 3 bullet points with a code example at the end."</div></li>
+      <li><span class="step-num">2</span><div><strong>Give context about your role.</strong> "As a Java Spring Boot developer..." dramatically changes output quality.</div></li>
+      <li><span class="step-num">3</span><div><strong>Use XML tags for structure.</strong> Claude responds remarkably well to <code>&lt;context&gt;</code> and <code>&lt;task&gt;</code> tags in complex prompts.</div></li>
+      <li><span class="step-num">4</span><div><strong>Ask for step-by-step reasoning</strong> for problems that need it. "Think through this carefully before answering."</div></li>
+    </ul>
+
+    <div class="callout">
+      <strong>Developer Insight:</strong> The biggest shift for me was treating Claude as a collaborator, not a compiler. Give it context about the why, not just the what.
+    </div>
+  </section>
+
+  <hr class="divider"/>
+
+  <!-- SECTION 2: EXTENDED THINKING -->
+  <section class="section" id="thinking">
+    <span class="section-number">02 / 06</span>
+    <h2>Extended Thinking: The YouTube Metadata Use Case</h2>
+
+    <p>
+      This is the feature that made my jaw drop. Extended Thinking lets Claude visibly reason through a problem — like watching someone's thought process unfold in real time before they give you an answer. It's available for complex tasks where quality matters more than speed.
+    </p>
+
+    <h3>Why YouTube Metadata?</h3>
+    <p>
+      I applied Extended Thinking to a real use case: optimizing YouTube video metadata. If you've ever tried to write titles, descriptions, tags, and chapter markers for a technical video, you know it's tedious and easy to get wrong for SEO.
+    </p>
+    <p>
+      With Extended Thinking enabled, Claude doesn't just spit out suggestions — it <em>reasons</em> through them. It weighs search intent vs. click-through rate. It considers algorithm signals. It cross-references what titles similar technical content uses. The output quality is genuinely different.
+    </p>
+
+    <div class="highlight-box">
+      <strong>Try this prompt with Extended Thinking:</strong><br/>
+      "Analyze this YouTube video transcript and generate an optimized title (max 60 chars), a 200-word description with keywords naturally embedded, 10 tags sorted by relevance, and timestamped chapter titles. Reason through each decision."
+    </div>
+
+    <h3>When to Use It (and When Not To)</h3>
+    <p>Extended Thinking shines for problems with multiple valid approaches, high-stakes decisions, and tasks where showing your reasoning matters. For simple lookups or quick generation tasks, it's overkill — standard mode is faster.</p>
+
+    <div class="tags">
+      <span class="tag">complex reasoning</span>
+      <span class="tag">content optimization</span>
+      <span class="tag">SEO strategy</span>
+      <span class="tag">multi-step analysis</span>
+    </div>
+  </section>
+
+  <hr class="divider"/>
+
+  <!-- SECTION 3: PROJECTS -->
+  <section class="section" id="projects">
+    <span class="section-number">03 / 06</span>
+    <h2>Working with Claude Projects</h2>
+
+    <p>
+      Here's the thing about AI tools that nobody talks about enough: context loss between sessions kills productivity. Every time you start a new chat, you're re-explaining the same background information.
+    </p>
+    <p>
+      <strong>Claude Projects</strong> solves this. A Project is a persistent workspace where you can upload documents, set a custom system prompt, and maintain context across all conversations within that project.
+    </p>
+
+    <h3>How I Structure My Projects</h3>
+    <p>As a developer, I create separate projects for different concerns:</p>
+
+    <ul class="step-list">
+      <li><span class="step-num">P1</span><div><strong>Backend Dev Project</strong> — Contains our API docs, coding standards doc, and a system prompt that says "You are a Java Spring Boot expert familiar with our internal framework conventions."</div></li>
+      <li><span class="step-num">P2</span><div><strong>Documentation Project</strong> — Loaded with our Jira ticket template, PR description template, and past architectural decisions.</div></li>
+      <li><span class="step-num">P3</span><div><strong>Learning Project</strong> — Where I explore new tech. System prompt: "Act as a senior engineer mentoring a developer. Challenge my assumptions."</div></li>
+    </ul>
+
+    <blockquote>
+      Projects turn Claude from a stateless tool into something that actually knows your codebase, your conventions, and your context. That's a fundamentally different experience.
+    </blockquote>
+
+    <h3>The Custom System Prompt Power Move</h3>
+    <p>
+      The most underrated feature inside Projects is the custom system prompt. You can prime Claude with your tech stack, your team's style guide, your preferred response format — and it holds for every single conversation in that project. No more repeating yourself.
+    </p>
+  </section>
+
+  <hr class="divider"/>
+
+  <!-- SECTION 4: ARTIFACTS -->
+  <section class="section" id="artifacts">
+    <span class="section-number">04 / 06</span>
+    <h2>Mastering Artifacts: Websites, GIFs, Google Docs & CSV</h2>
+
+    <p>
+      Artifacts might be Claude's most visually impressive feature, and the one that impresses non-technical stakeholders the most. An Artifact is a rendered, standalone output that appears alongside the conversation — a live website, an interactive component, a document.
+    </p>
+
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="feature-card-icon ic-blue">🌐</div>
+        <h4>Websites</h4>
+        <p>Full HTML/CSS/JS sites. Describe what you want and get a working prototype in seconds.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-card-icon ic-amber">🎞️</div>
+        <h4>Animated GIFs</h4>
+        <p>Generate animated visual outputs for documentation, Slack, or presentations.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-card-icon ic-green">📄</div>
+        <h4>Google Docs</h4>
+        <p>Formatted documents, PRDs, reports — ready to share or download immediately.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-card-icon ic-teal">📊</div>
+        <h4>CSV Dashboards</h4>
+        <p>Upload a CSV and get a complete interactive data dashboard with charts.</p>
+      </div>
+    </div>
+
+    <h3>The CSV Dashboard That Saved My Demo</h3>
+    <p>
+      I need to tell you about the day I had 40 minutes before a client demo and realized our data visualization wasn't ready. I took the raw CSV export from our analytics system, dropped it into Claude, typed "create a dashboard," and got back a complete, interactive, Chart.js-powered HTML file with bar charts, KPI cards, and column auto-detection.
+    </p>
+    <p>
+      Forty minutes. Zero code written by me. Working dashboard.
+    </p>
+
+    <div class="callout">
+      <strong>Pro Tip:</strong> For website artifacts, be specific about the design aesthetic. "Dark, developer-focused, monospace typography" yields wildly different results than "clean and minimal."
+    </div>
+
+    <h3>React Components as Artifacts</h3>
+    <p>
+      As a developer, the React artifact capability is particularly powerful. Describe a component — a data table, a form, a kanban board — and get back working, Tailwind-styled JSX code that renders live in the chat. I've used this to prototype UI ideas in minutes and share them with designers for feedback before writing a single line of real code.
+    </p>
+  </section>
+
+  <hr class="divider"/>
+
+  <!-- SECTION 5: SKILLS -->
+  <section class="section" id="skills">
+    <span class="section-number">05 / 06</span>
+    <h2>Claude Skills: Understanding & Using Existing Skills</h2>
+
+    <p>
+      This is where things get interesting for technically-oriented users. Claude Skills are pre-built instruction sets — essentially expert playbooks — that teach Claude how to produce specific types of high-quality output. They live as <code>SKILL.md</code> files and Claude reads them before tackling a task.
+    </p>
+
+    <h3>What Existing Skills Are Available?</h3>
+    <p>Out of the box, there are skills for some incredibly useful tasks:</p>
+
+    <ul class="step-list">
+      <li><span class="step-num">→</span><div><strong>DOCX Skill</strong> — Produces properly formatted Word documents with tables of contents, headers, page structure</div></li>
+      <li><span class="step-num">→</span><div><strong>PPTX Skill</strong> — Generates presentation decks with proper slide layouts and visual structure</div></li>
+      <li><span class="step-num">→</span><div><strong>XLSX Skill</strong> — Creates Excel-compatible spreadsheets with formulas and formatting intact</div></li>
+      <li><span class="step-num">→</span><div><strong>PDF Skill</strong> — Handles PDF creation, extraction, merging, and manipulation</div></li>
+      <li><span class="step-num">→</span><div><strong>CSV Dashboard Skill</strong> — Auto-detects column types and generates interactive HTML dashboards</div></li>
+      <li><span class="step-num">→</span><div><strong>Financial Dashboard Skill</strong> — Specialized for earnings data, KPIs, and business metrics</div></li>
+      <li><span class="step-num">→</span><div><strong>Frontend Design Skill</strong> — Creates distinctive, production-grade UI components — not generic AI output</div></li>
+    </ul>
+
+    <div class="callout">
+      The difference between Claude using a skill and not using one is like the difference between asking a generalist and asking a specialist. The output depth, structure, and quality are genuinely different.
+    </div>
+
+    <h3>How Skills Actually Work</h3>
+    <p>
+      When you trigger a task that maps to a skill, Claude reads the <code>SKILL.md</code> file first — pulling in best practices, output constraints, tool usage patterns, and quality benchmarks — then executes your request with that context loaded. It's like briefing an expert before they start work, every single time.
+    </p>
+  </section>
+
+  <hr class="divider"/>
+
+  <!-- SECTION 6: CUSTOM SKILL -->
+  <section class="section" id="custom-skill">
+    <span class="section-number">06 / 06</span>
+    <h2>Building Your Own Custom SKILL.md</h2>
+
+    <p>
+      This is the power-user move. Once I understood how skills work, the natural next question was: can I write my own? The answer is yes — and it's more powerful than I expected.
+    </p>
+
+    <h3>Anatomy of a SKILL.md File</h3>
+
+    <div class="skill-file">
+      <div class="skill-file-header">
+        <div class="dot dot-red"></div>
+        <div class="dot dot-amber"></div>
+        <div class="dot dot-green"></div>
+        <span class="skill-file-name">MY_CUSTOM_SKILL.md</span>
+      </div>
+      <div class="skill-file-body">
+        <div><span class="comment">---</span></div>
+        <div><span class="key">name:</span> <span class="val">spring-boot-pr-description</span></div>
+        <div><span class="key">description:</span> <span class="val">Generates structured PR descriptions for</span></div>
+        <div><span class="val">  Java Spring Boot microservices following our</span></div>
+        <div><span class="val">  team conventions and Jira integration format.</span></div>
+        <div><span class="comment">---</span></div>
+        <br/>
+        <div><span class="comment">## When to use this skill</span></div>
+        <div>Trigger when user asks for a PR description,</div>
+        <div>pull request summary, or code review draft.</div>
+        <br/>
+        <div><span class="comment">## Output format</span></div>
+        <div>Always include: JIRA ticket reference,</div>
+        <div>what changed, why it changed, how to test it,</div>
+        <div>and any breaking change warnings.</div>
+        <br/>
+        <div><span class="comment">## Quality rules</span></div>
+        <div>- Use imperative mood in titles</div>
+        <div>- Flag any changes to public APIs</div>
+        <div>- Include rollback steps for infra changes</div>
+      </div>
+    </div>
+
+    <h3>My Real-World Custom Skill Examples</h3>
+    <p>Here's what I actually built for my development workflow:</p>
+
+    <ul class="step-list">
+      <li><span class="step-num">1</span><div><strong>Jira Ticket Skill</strong> — Formats bug reports and feature requests in our specific Jira template, with acceptance criteria, story points guidance, and component tagging.</div></li>
+      <li><span class="step-num">2</span><div><strong>API Documentation Skill</strong> — Takes a controller class and generates OpenAPI/Swagger-style documentation in our internal format.</div></li>
+      <li><span class="step-num">3</span><div><strong>Code Review Skill</strong> — Reviews PRs specifically for our coding standards: Spring Boot conventions, logging patterns, exception handling consistency.</div></li>
+    </ul>
+
+    <h3>Building Your First Skill: The Process</h3>
+
+    <ul class="step-list">
+      <li><span class="step-num">①</span><div><strong>Identify the repetitive task</strong> — What do you ask Claude to do more than 3 times per week?</div></li>
+      <li><span class="step-num">②</span><div><strong>Write the trigger description</strong> — When should Claude automatically use this skill? Be specific about keywords and contexts.</div></li>
+      <li><span class="step-num">③</span><div><strong>Document the output format</strong> — What does "perfect" look like? Give concrete examples.</div></li>
+      <li><span class="step-num">④</span><div><strong>Add quality rules</strong> — What should Claude always do? What should it never do?</div></li>
+      <li><span class="step-num">⑤</span><div><strong>Test and iterate</strong> — Use the Skill Creator skill to evaluate and optimize your SKILL.md.</div></li>
+    </ul>
+
+    <div class="callout">
+      <strong>The meta-move:</strong> There's a Skill Creator skill that helps you build and optimize other skills. Use Claude to build better prompts for Claude. It's turtles all the way down — and it actually works.
+    </div>
+
+    <blockquote>
+      A well-written SKILL.md is like pair programming with the world's most patient senior developer who never forgets your team's conventions.
+    </blockquote>
+  </section>
+
+  <hr class="divider"/>
+
+  <!-- CLOSING -->
+  <section class="section">
+    <h2>The Bigger Picture</h2>
+
+    <p>
+      Working through these six areas taught me something I didn't expect: the barrier to getting great output from Claude isn't the model's capability — it's knowing how to structure your requests and your environment.
+    </p>
+    <p>
+      Fundamentals give you the vocabulary. Extended Thinking gives you depth. Projects give you persistence. Artifacts give you deliverables. Skills give you specialization. And building custom skills? That's when you stop being a user and start being a craftsperson.
+    </p>
+    <p>
+      As software developers, we spend enormous energy learning frameworks, languages, and tools. Claude is no different — it rewards people who invest in understanding it properly.
+    </p>
+
+    <div class="cta-box">
+      <h3>What's your Claude workflow?</h3>
+      <p>I'd love to hear what features you've found most useful. Drop a comment below or connect with me on LinkedIn — let's compare notes.</p>
+    </div>
+
+    <div class="tags">
+      <span class="tag">Claude AI</span>
+      <span class="tag">AI Tools</span>
+      <span class="tag">Software Development</span>
+      <span class="tag">Productivity</span>
+      <span class="tag">Prompt Engineering</span>
+      <span class="tag">Developer Tools</span>
+      <span class="tag">Anthropic</span>
+      <span class="tag">AI Workflows</span>
+    </div>
+  </section>
+
+  <footer class="post-footer">
+    <span>Written by Lakshay · Software Developer</span>
+    <span>April 2026</span>
+  </footer>
+
+</main>
+</body>
+</html>
