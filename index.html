@@ -3,14 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Claude Goes Deeper: Connectors, Extensions & MCP Servers Explained | Lakshay</title>
-  <meta name="description" content="A hands-on developer guide to Claude's Gmail & Drive Connectors, Desktop & Chrome Extensions, MCP Servers, building a custom Gmail automation with n8n, querying Supabase live, and what's coming next." />
-  <meta name="keywords" content="Claude AI, MCP Server, Gmail Connector, Google Drive, Claude Desktop, n8n automation, Supabase, AI tools, software development, developer productivity" />
-  <meta property="og:title" content="Claude Goes Deeper: Connectors, Extensions & MCP Servers Explained" />
-  <meta property="og:description" content="From Gmail connectors to live database queries — how Claude's integrations are changing the way I work as a developer." />
+  <title>I Went Through a Full Claude AI Course — Here's Everything That Changed How I Work | Lakshay</title>
+  <meta name="description" content="From building and deploying live apps to deep research mindmaps and bulk file management — a software developer's complete walkthrough of Claude AI from basics to Cowork." />
+  <meta name="keywords" content="Claude AI, Anthropic, Cowork, MCP, Artifacts, Skills, Claude Projects, AI productivity, software development, developer tools" />
+  <meta name="author" content="Lakshay" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <style>
     :root {
       --ink: #1a1a1a;
@@ -29,7 +28,7 @@
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { font-size: 18px; }
-    body { background: var(--page); color: var(--ink); font-family: 'Source Serif 4', Georgia, serif; font-weight: 300; line-height: 1.8; }
+    body { background: var(--page); color: var(--ink); font-family: 'Source Serif 4', Georgia, serif; line-height: 1.8; }
 
     /* HERO */
     .hero {
@@ -44,32 +43,30 @@
       position: absolute;
       inset: 0;
       background: repeating-linear-gradient(
-        -55deg,
+        -45deg,
         transparent,
-        transparent 18px,
-        rgba(255,255,255,0.03) 18px,
-        rgba(255,255,255,0.03) 36px
+        transparent 24px,
+        rgba(255,255,255,0.03) 24px,
+        rgba(255,255,255,0.03) 48px
       );
-      pointer-events: none;
     }
-    .hero-inner { position: relative; z-index: 1; max-width: 760px; margin: 0 auto; }
-    .eyebrow {
+    .hero-inner { position: relative; max-width: 760px; margin: 0 auto; }
+    .hero-eyebrow {
       display: inline-block;
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.7rem;
-      font-weight: 500;
+      font-size: 0.72rem;
       letter-spacing: 0.14em;
       text-transform: uppercase;
       color: rgba(255,255,255,0.6);
       border: 1px solid rgba(255,255,255,0.2);
-      border-radius: 20px;
       padding: 4px 14px;
+      border-radius: 20px;
       margin-bottom: 24px;
     }
     .hero h1 {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(2rem, 5vw, 3rem);
-      font-weight: 700;
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 800;
       color: #fff;
       line-height: 1.2;
       margin-bottom: 20px;
@@ -77,18 +74,18 @@
     .hero h1 em { font-style: italic; color: #a8c4f0; }
     .hero-subtitle {
       font-size: 1.05rem;
-      color: rgba(255,255,255,0.78);
+      color: rgba(255,255,255,0.75);
       max-width: 600px;
       margin: 0 auto 28px;
-      font-weight: 300;
+      line-height: 1.7;
     }
     .hero-meta {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.72rem;
+      font-size: 0.75rem;
       color: rgba(255,255,255,0.5);
-      letter-spacing: 0.06em;
+      letter-spacing: 0.05em;
     }
-    .hero-meta span { margin: 0 10px; }
+    .hero-meta span { margin: 0 8px; }
 
     /* CONTAINER */
     .container { max-width: 760px; margin: 0 auto; padding: 64px 24px; }
@@ -98,58 +95,49 @@
       background: var(--card-bg);
       border: 1px solid var(--card-border);
       border-left: 4px solid var(--accent2);
-      border-radius: 6px;
+      border-radius: 8px;
       padding: 28px 32px;
       margin-bottom: 56px;
     }
-    .toc h3 {
+    .toc-title {
       font-family: 'JetBrains Mono', monospace;
       font-size: 0.72rem;
-      letter-spacing: 0.12em;
       text-transform: uppercase;
+      letter-spacing: 0.12em;
       color: var(--ink-faint);
       margin-bottom: 16px;
     }
     .toc ol { padding-left: 20px; }
-    .toc li { margin-bottom: 8px; }
-    .toc a { color: var(--accent2); text-decoration: none; font-size: 0.92rem; }
+    .toc ol li { margin-bottom: 8px; }
+    .toc a { color: var(--accent2); text-decoration: none; font-size: 0.95rem; }
     .toc a:hover { text-decoration: underline; }
 
     /* SECTIONS */
-    .section { margin-bottom: 64px; }
+    .section { margin-bottom: 72px; }
     .section-label {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.68rem;
-      font-weight: 500;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
+      font-size: 0.72rem;
       color: var(--ink-faint);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
       margin-bottom: 10px;
     }
     .section h2 {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.75rem;
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.9rem;
       font-weight: 700;
       color: var(--ink);
-      line-height: 1.25;
-      margin-bottom: 22px;
+      margin-bottom: 20px;
+      line-height: 1.3;
     }
     .section p { margin-bottom: 18px; color: var(--ink); }
-    code {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.82em;
-      background: var(--code-bg);
-      color: var(--accent);
-      padding: 2px 6px;
-      border-radius: 3px;
-    }
-    hr.section-rule { border: none; border-top: 1px solid var(--rule); margin: 48px 0; }
+    .section p:last-child { margin-bottom: 0; }
 
     /* CALLOUT */
     .callout {
       background: #fff8f0;
       border-left: 4px solid var(--accent);
-      border-radius: 0 6px 6px 0;
+      border-radius: 0 8px 8px 0;
       padding: 18px 22px;
       margin: 28px 0;
       font-size: 0.95rem;
@@ -158,9 +146,9 @@
 
     /* HIGHLIGHT BOX */
     .highlight-box {
-      background: #f0f8f4;
-      border-left: 4px solid var(--accent3);
-      border-radius: 0 6px 6px 0;
+      background: #f0f7ff;
+      border: 1px solid #c5d9f5;
+      border-radius: 8px;
       padding: 18px 22px;
       margin: 28px 0;
       font-size: 0.95rem;
@@ -168,12 +156,36 @@
 
     /* BLOCKQUOTE */
     blockquote {
-      border-left: 3px solid var(--accent3);
-      padding: 12px 24px;
+      border-left: 4px solid var(--accent3);
+      padding: 14px 24px;
       margin: 28px 0;
       font-style: italic;
       color: var(--ink-muted);
       font-size: 1.05rem;
+    }
+
+    /* STEP LIST */
+    .step-list { list-style: none; margin: 24px 0; }
+    .step-list li {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 16px;
+      align-items: flex-start;
+    }
+    .step-num {
+      flex-shrink: 0;
+      width: 28px;
+      height: 28px;
+      background: var(--accent2);
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 500;
+      margin-top: 2px;
     }
 
     /* FEATURE GRID */
@@ -186,46 +198,27 @@
     .feature-card {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
-      border-radius: 8px;
-      padding: 20px 18px;
+      border-radius: 10px;
+      padding: 20px;
     }
-    .feature-card-icon { font-size: 1.5rem; margin-bottom: 10px; }
+    .feature-card-icon { font-size: 1.6rem; margin-bottom: 10px; }
     .feature-card h4 {
-      font-family: 'Playfair Display', serif;
-      font-size: 0.95rem;
-      font-weight: 600;
-      margin-bottom: 6px;
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1rem;
+      margin-bottom: 8px;
     }
-    .feature-card p { font-size: 0.85rem; color: var(--ink-muted); margin: 0; }
-
-    /* STEP LIST */
-    .step-list { list-style: none; padding: 0; margin: 24px 0; }
-    .step-list li {
-      display: flex;
-      gap: 16px;
-      align-items: flex-start;
-      margin-bottom: 16px;
-    }
-    .step-num {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 28px;
-      height: 28px;
-      min-width: 28px;
-      background: var(--accent2);
-      color: #fff;
-      border-radius: 50%;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.75rem;
-      font-weight: 500;
-    }
-    .step-list li div { font-size: 0.95rem; padding-top: 4px; }
+    .feature-card p { font-size: 0.88rem; color: var(--ink-muted); margin: 0; }
 
     /* DARK CODE BLOCK */
-    .skill-file { border-radius: 8px; overflow: hidden; margin: 24px 0; font-family: 'JetBrains Mono', monospace; }
+    .skill-file {
+      background: #1e1e2e;
+      border-radius: 10px;
+      overflow: hidden;
+      margin: 28px 0;
+      font-family: 'JetBrains Mono', monospace;
+    }
     .skill-file-header {
-      background: #2a2a2a;
+      background: #2a2a3e;
       padding: 10px 16px;
       display: flex;
       align-items: center;
@@ -233,47 +226,59 @@
     }
     .dot { width: 12px; height: 12px; border-radius: 50%; }
     .dot-red { background: #ff5f57; }
-    .dot-amber { background: #febc2e; }
-    .dot-green { background: #28c840; }
-    .skill-file-name { font-size: 0.72rem; color: #aaa; margin-left: 8px; }
+    .dot-amber { background: #ffbd2e; }
+    .dot-green { background: #28c940; }
+    .skill-file-name {
+      margin-left: 10px;
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.5);
+      letter-spacing: 0.05em;
+    }
     .skill-file-body {
-      background: #1e1e1e;
-      color: #d4d4d4;
       padding: 20px 22px;
-      font-size: 0.8rem;
+      font-size: 0.82rem;
+      color: #cdd6f4;
       line-height: 1.7;
       white-space: pre-wrap;
-      overflow-x: auto;
     }
-    .skill-file-body .kw { color: #569cd6; }
-    .skill-file-body .str { color: #ce9178; }
-    .skill-file-body .cmt { color: #6a9955; }
-    .skill-file-body .fn { color: #dcdcaa; }
+    .skill-file-body .kw { color: #cba6f7; }
+    .skill-file-body .str { color: #a6e3a1; }
+    .skill-file-body .cm { color: #6c7086; }
+
+    /* INLINE CODE */
+    code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82em;
+      background: var(--code-bg);
+      color: var(--accent);
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
 
     /* CTA BOX */
     .cta-box {
       background: var(--accent2);
-      border-radius: 10px;
+      border-radius: 12px;
       padding: 40px 36px;
       text-align: center;
-      margin: 56px 0 40px;
+      margin: 72px 0 48px;
     }
     .cta-box h3 {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.4rem;
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.6rem;
       color: #fff;
       margin-bottom: 12px;
     }
     .cta-box p { color: rgba(255,255,255,0.8); font-size: 0.95rem; margin-bottom: 0; }
 
     /* TAGS */
-    .tags { display: flex; flex-wrap: wrap; gap: 10px; margin: 32px 0; }
+    .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 48px; }
     .tag {
       background: var(--tag-bg);
       color: var(--tag-text);
       font-family: 'JetBrains Mono', monospace;
       font-size: 0.72rem;
-      padding: 5px 14px;
+      padding: 5px 13px;
       border-radius: 20px;
       letter-spacing: 0.04em;
     }
@@ -281,27 +286,14 @@
     /* FOOTER */
     .footer {
       border-top: 1px solid var(--rule);
-      padding-top: 24px;
-      text-align: center;
+      padding-top: 28px;
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.72rem;
+      font-size: 0.75rem;
       color: var(--ink-faint);
-      letter-spacing: 0.06em;
+      text-align: center;
     }
 
-    /* BIGGER PICTURE */
-    .bigger-picture {
-      background: linear-gradient(135deg, #f5f0e8 0%, #eef2fa 100%);
-      border-radius: 10px;
-      padding: 36px 32px;
-      margin: 48px 0;
-    }
-    .bigger-picture h2 {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.5rem;
-      color: var(--accent2);
-      margin-bottom: 16px;
-    }
+    hr.section-rule { border: none; border-top: 1px solid var(--rule); margin: 56px 0; }
 
     @media (max-width: 600px) {
       .hero { padding: 56px 20px 52px; }
@@ -315,342 +307,332 @@
 <!-- HERO -->
 <section class="hero">
   <div class="hero-inner">
-    <div class="eyebrow">Claude AI · Deep Dive Series</div>
-    <h1>Claude Goes <em>Deeper</em>:<br>Connectors, Extensions & MCP Servers</h1>
-    <p class="hero-subtitle">From Gmail connectors to live Supabase queries — how Claude's integration ecosystem is reshaping the way I work as a developer.</p>
+    <div class="hero-eyebrow">Full Course Walkthrough · Claude AI</div>
+    <h1>I Went Through a Complete Claude AI Course —<br>Here's <em>Everything</em> That Changed How I Work</h1>
+    <p class="hero-subtitle">From building live apps in minutes to deep research mindmaps and bulk file automation — a software developer's honest walkthrough of Claude from basics to Cowork.</p>
     <div class="hero-meta">
-      <span>⏱ 10 min read</span>
-      <span>✍️ Lakshay</span>
-      <span>📅 April 2026</span>
+      <span>14 min read</span>·<span>Lakshay</span>·<span>July 2025</span>
     </div>
   </div>
 </section>
 
-<!-- CONTAINER -->
+<!-- MAIN CONTENT -->
 <div class="container">
 
   <!-- TOC -->
   <nav class="toc">
-    <h3>Table of Contents</h3>
+    <div class="toc-title">Table of Contents</div>
     <ol>
-      <li><a href="#s1">Connectors: Gmail &amp; Google Drive Integration</a></li>
-      <li><a href="#s2">Extensions: Claude Desktop, Chrome &amp; PDF Tools</a></li>
-      <li><a href="#s3">MCP Server: What It Is &amp; Why It Matters</a></li>
-      <li><a href="#s4">Building a Custom MCP Server With n8n (Gmail Automation)</a></li>
-      <li><a href="#s5">Supabase MCP: Querying Your Database Live</a></li>
-      <li><a href="#s6">Summary, What's Coming Next &amp; Claude Coworking Preview</a></li>
+      <li><a href="#intro">Introduction & Course Overview</a></li>
+      <li><a href="#basics">Claude Basics & First Impressions</a></li>
+      <li><a href="#artifacts">Artifact Creation: Build, Edit & Publish</a></li>
+      <li><a href="#health-survey">Health Survey App: Build & Deploy Live</a></li>
+      <li><a href="#memory">Importing Memory from ChatGPT & Gemini</a></li>
+      <li><a href="#connectors">Connectors: Deploy Artifact to Netlify</a></li>
+      <li><a href="#pricing">Pricing & Plans Breakdown</a></li>
+      <li><a href="#cowork">Phase 2: Cowork Setup</a></li>
+      <li><a href="#five-levels">The 5 Levels: Projects → Skills → Cowork</a></li>
+      <li><a href="#pdf-dashboard">Project Demo: Any PDF → Dashboard</a></li>
+      <li><a href="#claude-md">CLAUDE.md: Folder Instructions + Backup + Logs</a></li>
+      <li><a href="#mindnode">MindNode via Cowork: Deep Research → Mindmap</a></li>
+      <li><a href="#files-folders">Organizing Files & Folders (OCR-Based, Bulk)</a></li>
+      <li><a href="#csv">CSV Edit, Clean & Visual Dashboard</a></li>
+      <li><a href="#bigger-picture">The Bigger Picture</a></li>
     </ol>
   </nav>
 
-  <!-- SECTION 1 -->
-  <section class="section" id="s1">
-    <div class="section-label">01 / 06</div>
-    <h2>Connectors: Gmail &amp; Google Drive Integration</h2>
-
-    <p>Let me be honest — when I first heard Claude could connect to Gmail and Google Drive, I expected a toy feature. Something that would let you ask "what's in my inbox?" and spit out a vague summary. What I actually found stopped me mid-task at work and made me rethink how I'd been spending the first hour of every morning.</p>
-
-    <p>Claude's Connectors are OAuth-based integrations that let Claude actually read your Gmail threads and Google Drive files in context. You enable them from <code>claude.ai → Settings → Connectors</code>, authorise your Google account, and Claude can then pull in live data. No copy-pasting. No screenshots. No switching tabs.</p>
-
-    <div class="feature-grid">
-      <div class="feature-card">
-        <div class="feature-card-icon">📧</div>
-        <h4>Gmail Connector</h4>
-        <p>Read, summarise, and reason over email threads directly in your Claude conversation.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-card-icon">📁</div>
-        <h4>Google Drive Connector</h4>
-        <p>Pull in Docs, Sheets, and PDFs from Drive so Claude can analyse or summarise them inline.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-card-icon">🔒</div>
-        <h4>OAuth Security</h4>
-        <p>Permissions are scoped and revokable. Claude reads what you authorise, nothing more.</p>
-      </div>
-    </div>
-
-    <p>Here's a real scenario from my week. We had a client requirements thread that had sprawled across 14 email replies over two weeks. Instead of re-reading the whole chain, I opened Claude, said: "Summarise this Gmail thread and identify the three unresolved requirements." Two minutes later I had a clean bullet list and a draft reply ready. I took that into our Jira sprint planning and it saved us a 30-minute meeting.</p>
-
-    <p>The Google Drive connector is just as powerful. I had a client-facing PDF spec living in Drive — 47 pages. I asked Claude to cross-check it against a Java service I was building and flag any gaps. It caught two endpoints I'd missed entirely. Old me would have done that manually in a late-night review session.</p>
-
-    <div class="callout">
-      <strong>Developer Insight:</strong> Connectors shine brightest when combined with Claude Projects. Store your project context once, enable the connector, and every conversation in that project has your email + Drive context baked in. No repetitive pasting.
-    </div>
-
-    <blockquote>"The best AI feature is the one that removes a step you didn't even know was slowing you down."</blockquote>
+  <!-- SECTION 01 -->
+  <section class="section" id="intro">
+    <div class="section-label">01 / 14</div>
+    <h2>Introduction & Course Overview</h2>
+    <p>Let me be honest about where I started: I was using Claude occasionally — mostly for quick code reviews and drafting emails — but I had no real system. A colleague pointed me to a structured Claude AI course, and I decided to commit to going through it properly, section by section, with my actual work in front of me.</p>
+    <p>What I didn't expect was how quickly "a productivity tool I used sometimes" would become the backbone of how I approach everything — from deploying live web apps to managing bulk files with OCR. This article is that journey, phase by phase.</p>
+    <div class="callout"><strong>Developer Insight:</strong> The course splits into two distinct phases. Phase 1 covers Claude fundamentals, Artifacts, Connectors, and pricing. Phase 2 dives into Cowork — Claude's most powerful (and least understood) workflow layer. I'd recommend treating them as separate learning goals, not one long session.</div>
   </section>
 
   <hr class="section-rule" />
 
-  <!-- SECTION 2 -->
-  <section class="section" id="s2">
-    <div class="section-label">02 / 06</div>
-    <h2>Extensions: Claude Desktop, Chrome &amp; PDF Tools</h2>
-
-    <p>Here's the thing about Claude's web interface — it's excellent, but it's still one browser tab among fifty. Claude Desktop changes that equation. It's a standalone application for macOS and Windows that keeps Claude available at the OS level, outside the browser entirely. For a developer like me who lives inside IntelliJ and a terminal, that matters.</p>
-
-    <p>Claude Desktop integrates with MCP servers locally (more on that in the next section), handles file drag-and-drop natively, and keeps persistent project context without the overhead of a browser session. It feels like having a senior colleague in a side window rather than a website you visit.</p>
-
+  <!-- SECTION 02 -->
+  <section class="section" id="basics">
+    <div class="section-label">02 / 14</div>
+    <h2>Claude Basics & First Impressions</h2>
+    <p>Here's the thing about "basics" — they set the mental model for everything that follows. The course doesn't just show you how to chat with Claude; it walks you through how Claude thinks. The context window, how conversations are structured, what makes a good prompt versus a lazy one.</p>
+    <p>For me, the lightbulb moment was understanding that Claude isn't a search engine. You don't query it — you <em>collaborate</em> with it. When I stopped asking "what is X" and started saying "here's my context, here's my constraint, here's what I want to achieve" — the quality of responses jumped dramatically.</p>
     <div class="feature-grid">
       <div class="feature-card">
-        <div class="feature-card-icon">🖥️</div>
-        <h4>Claude Desktop</h4>
-        <p>Native app for macOS &amp; Windows. OS-level access, local MCP server support, always-on.</p>
+        <div class="feature-card-icon">🧠</div>
+        <h4>Context-First Thinking</h4>
+        <p>Claude performs best when you give it your full situation, not just a question.</p>
       </div>
       <div class="feature-card">
-        <div class="feature-card-icon">🌐</div>
-        <h4>Claude in Chrome</h4>
-        <p>Browser extension that lets Claude read the current page and assist inline — no copy-paste.</p>
+        <div class="feature-card-icon">💬</div>
+        <h4>Conversation Architecture</h4>
+        <p>Each conversation is a fresh context window — understanding this shapes how you structure sessions.</p>
       </div>
       <div class="feature-card">
-        <div class="feature-card-icon">📄</div>
-        <h4>PDF Tools</h4>
-        <p>Upload PDFs directly into Claude for analysis, extraction, summarisation, and Q&amp;A.</p>
+        <div class="feature-card-icon">📐</div>
+        <h4>Prompt Precision</h4>
+        <p>Specificity isn't just helpful — it's the difference between a generic answer and a genuinely useful one.</p>
       </div>
     </div>
-
-    <p>The Chrome extension is where things get practically magical. I was reviewing a long RFC document hosted on an internal wiki page. Instead of copying chunks into Claude's chat, I opened the extension and asked: "What are the breaking changes in this proposal?" Claude read the page in context and gave me a structured breakdown. Zero copying. Zero tab-switching. That's the kind of friction removal that actually changes habits.</p>
-
-    <p>PDF support deserves its own mention. As a developer at an IT company, I deal with vendor contracts, architecture docs, and compliance requirements that arrive as PDFs. Being able to drop a 60-page document into Claude and ask targeted questions — "Which clause defines SLA penalties?" or "Summarise the data retention policy" — saves hours of ctrl+F archaeology.</p>
-
-    <div class="highlight-box">
-      <strong>Try this:</strong> Install Claude in Chrome and the next time you're reviewing a long GitHub PR description or Confluence page, open the extension and ask Claude to summarise the key changes. You'll wonder how you reviewed docs without it.
-    </div>
-
-    <blockquote>"Moving Claude out of a browser tab and into your OS is the difference between a tool you visit and a tool that works alongside you."</blockquote>
+    <blockquote>"Claude isn't a search engine you query. It's a collaborator you brief."</blockquote>
   </section>
 
   <hr class="section-rule" />
 
-  <!-- SECTION 3 -->
-  <section class="section" id="s3">
-    <div class="section-label">03 / 06</div>
-    <h2>MCP Server: What It Is &amp; Why It Matters</h2>
+  <!-- SECTION 03 -->
+  <section class="section" id="artifacts">
+    <div class="section-label">03 / 14</div>
+    <h2>Artifact Creation: Build, Edit & Publish</h2>
+    <p>I need to tell you about the first time I saw Claude build a fully working web app inside the chat window. I'd asked it to create a simple project status tracker — something I'd normally spend half a Sprint building — and within about 90 seconds I had a responsive HTML dashboard with filter controls, status badges, and a clean layout. I hadn't written a single line of code.</p>
+    <p>Artifacts are Claude's output format for runnable, editable content. They live in a side panel, can be iterated on in real time, and — critically — can be exported. The course covers the full lifecycle: generating an Artifact, refining it through follow-up prompts, and getting it ready for actual deployment.</p>
+    <ul class="step-list">
+      <li><span class="step-num">1</span><div><strong>Generate</strong> — Describe what you want. Be specific about the UI, the data, and the interactions. Claude builds it live.</div></li>
+      <li><span class="step-num">2</span><div><strong>Edit</strong> — Ask follow-up refinements in plain English. "Make the header sticky." "Add a dark mode toggle." "Use a table instead of cards."</div></li>
+      <li><span class="step-num">3</span><div><strong>Export & Publish</strong> — Copy the HTML/JSX, push to GitHub Pages or Netlify, and you have a live URL in under 5 minutes.</div></li>
+    </ul>
+    <div class="callout"><strong>Developer Insight:</strong> The fastest workflow I've found: describe the feature in terms of what it <em>does</em>, not what it <em>looks like</em>. "A table that lets me filter Java microservices by status and owner" gets you further than "a table with blue headers and rounded corners."</div>
+  </section>
 
-    <p>I need to tell you about the moment MCP clicked for me. I was watching a demo where someone asked Claude to check a Jira ticket, read the related GitHub PR, and then write a test plan — all in one prompt. I assumed there was some hidden integration magic. There wasn't. There was an MCP server.</p>
+  <hr class="section-rule" />
 
-    <p>MCP stands for <strong>Model Context Protocol</strong>. It's an open protocol created by Anthropic that defines a standard way for AI models to connect to external tools, data sources, and services. Think of it as USB-C for AI integrations: one standard, many devices.</p>
+  <!-- SECTION 04 -->
+  <section class="section" id="health-survey">
+    <div class="section-label">04 / 14</div>
+    <h2>Health Survey App: Build & Deploy Live</h2>
+    <p>The course uses a health survey app as its hands-on project — and it's a brilliant choice because it requires real logic: multi-step forms, conditional questions, input validation, result calculation, and a summary screen. These aren't trivial requirements. This is the kind of app that usually takes a junior dev a few days to wire up properly.</p>
+    <p>Claude built the full working app — including a responsive layout, score calculation based on responses, and a results card with colour-coded health indicators — and then the course walked through deploying it live. By the end of that section, I had a public URL I could share. Total time from "blank screen" to "live app": under 40 minutes, including learning pauses.</p>
+    <div class="highlight-box"><strong>Try this:</strong> Describe a small internal tool you've been meaning to build at work — a leave tracker, a code review checklist, a Jira ticket template generator. Give Claude the full requirements and watch it produce a working prototype in one conversation.</div>
+    <blockquote>"The gap between 'I wish we had a tool for this' and 'here's a working prototype' is now measured in minutes, not sprints."</blockquote>
+  </section>
 
+  <hr class="section-rule" />
+
+  <!-- SECTION 05 -->
+  <section class="section" id="memory">
+    <div class="section-label">05 / 14</div>
+    <h2>Importing Memory from ChatGPT & Gemini</h2>
+    <p>This one surprised me. I'd accumulated a lot of context in ChatGPT over the past year — project notes, preferences, prompts that worked well. The idea of starting from scratch in Claude felt like a real friction point. This section of the course addresses that directly.</p>
+    <p>Claude supports importing conversation history and memory exports from other AI tools. The process involves exporting your data from ChatGPT or Gemini, then structuring key context into a format Claude can ingest — either as a memory note or as part of a Project's system context. It's not a one-click sync, but it's far less painful than it sounds.</p>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="feature-card-icon">📦</div>
+        <h4>ChatGPT Export</h4>
+        <p>Use the data export feature in ChatGPT settings to get your conversation history as a structured JSON file.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-card-icon">🔄</div>
+        <h4>Context Distillation</h4>
+        <p>Don't import raw history — extract the key facts, preferences, and rules that made those conversations work.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-card-icon">🗂️</div>
+        <h4>Claude Projects</h4>
+        <p>Paste distilled context into a Project's system prompt to make it persistent across all conversations in that Project.</p>
+      </div>
+    </div>
+    <div class="callout"><strong>Developer Insight:</strong> I created a single "Developer Context" document — my tech stack, current project state, coding preferences, team conventions — and added it to my main Claude Project. Now every conversation in that Project starts with full context, no re-briefing needed.</div>
+  </section>
+
+  <hr class="section-rule" />
+
+  <!-- SECTION 06 -->
+  <section class="section" id="connectors">
+    <div class="section-label">06 / 14</div>
+    <h2>Connectors: Deploy Artifact to Netlify</h2>
+    <p>The Connectors section was where Phase 1 really clicked for me as a developer. Up until this point, Claude was producing great outputs — but I still had to manually copy files, push to Git, configure deployments. Connectors change that entirely.</p>
+    <p>The course demonstrates deploying an Artifact directly to Netlify via Claude's Connector integration. You build the app in Claude, then tell Claude to deploy it. Claude handles the Netlify API interaction. You get a live URL without touching a terminal.</p>
     <div class="skill-file">
       <div class="skill-file-header">
         <div class="dot dot-red"></div>
         <div class="dot dot-amber"></div>
         <div class="dot dot-green"></div>
-        <span class="skill-file-name">mcp-concept.txt</span>
+        <span class="skill-file-name">deployment-flow.txt</span>
       </div>
-      <div class="skill-file-body"><span class="cmt"># How MCP works (simplified)</span>
+      <div class="skill-file-body"><span class="cm"># Claude → Netlify deployment via Connectors</span>
 
-<span class="kw">Without MCP:</span>
-  User → Claude → Claude's knowledge (static, cutoff date)
+<span class="kw">Step 1:</span> Build or refine your Artifact inside Claude chat
+<span class="kw">Step 2:</span> Connect Netlify via Claude Connectors (one-time setup)
+<span class="kw">Step 3:</span> Prompt Claude: <span class="str">"Deploy this to my Netlify account"</span>
+<span class="kw">Step 4:</span> Claude handles the API call — you get a live URL
 
-<span class="kw">With MCP:</span>
-  User → Claude → MCP Server → Live Tool / Database / API
-                             → Real-time data returned to Claude
-                             → Claude responds with live context</div>
+<span class="cm"># Result: zero terminal, zero manual file handling</span></div>
     </div>
-
-    <p>Before MCP, every AI integration was custom: a bespoke plugin, a proprietary API wrapper, a one-off script. MCP standardises this. An MCP server exposes a set of "tools" (functions) that Claude can discover and call. Claude decides which tool to invoke based on your prompt, calls it, gets the result, and incorporates it into its response — seamlessly.</p>
-
-    <div class="feature-grid">
-      <div class="feature-card">
-        <div class="feature-card-icon">🔌</div>
-        <h4>Standardised Protocol</h4>
-        <p>One protocol for all integrations. Build once, connect to any MCP-compatible AI.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-card-icon">⚡</div>
-        <h4>Real-Time Data</h4>
-        <p>Claude gets live results from tools — not static knowledge from training data.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-card-icon">🧩</div>
-        <h4>Composable</h4>
-        <p>Multiple MCP servers can run simultaneously. Claude can call tools across servers in one conversation.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-card-icon">🏗️</div>
-        <h4>Open Ecosystem</h4>
-        <p>Hundreds of community-built MCP servers already exist for Jira, GitHub, Slack, databases, and more.</p>
-      </div>
-    </div>
-
-    <p>Why does this matter to a developer? Because it means Claude is no longer a static question-answering system. It becomes an agent that can interact with your actual stack. And crucially, you don't need to be working at a FAANG company to build one. As I'll show you in the next section, you can spin up a custom MCP server in an afternoon using tools you already know.</p>
-
-    <div class="callout">
-      <strong>Developer Insight:</strong> MCP servers run locally (via Claude Desktop) or remotely (via HTTPS). For sensitive internal tooling — like connecting Claude to your company's Jira or internal APIs — local MCP servers keep data off external networks entirely.
-    </div>
+    <blockquote>"The best deployment workflow is the one where I don't have to think about deployment at all."</blockquote>
   </section>
 
   <hr class="section-rule" />
 
-  <!-- SECTION 4 -->
-  <section class="section" id="s4">
-    <div class="section-label">04 / 06</div>
-    <h2>Building a Custom MCP Server With n8n (Gmail Automation)</h2>
-
-    <p>I'll admit I was slightly intimidated when I first looked at MCP server documentation. "Write a TypeScript server, expose tool schemas, handle JSON-RPC…" — it felt like unnecessary infrastructure for a developer who just wants Claude to check their email. Then I found n8n, and the whole thing clicked into place in about 45 minutes.</p>
-
-    <p><strong>n8n</strong> is an open-source workflow automation tool (think Zapier, but self-hostable and developer-friendly). It has native MCP server support, which means you can visually build the logic for your MCP tools and n8n handles all the protocol plumbing for you.</p>
-
-    <p>Here's the Gmail automation I built: Claude can now check my inbox, find unread emails from a specific sender or label, and summarise them — all triggered from a natural language prompt in Claude Desktop.</p>
-
-    <div class="step-list">
-      <li><span class="step-num">1</span><div><strong>Set up n8n:</strong> Run n8n locally via Docker or use n8n Cloud. Create a new workflow with an "MCP Server Trigger" node as the entry point.</div></li>
-      <li><span class="step-num">2</span><div><strong>Define your tool:</strong> In the trigger node, name your tool (<code>check_gmail</code>), add a description Claude will read, and define input parameters (e.g., <code>label</code>, <code>max_results</code>).</div></li>
-      <li><span class="step-num">3</span><div><strong>Add Gmail node:</strong> Connect a Gmail node, authenticate with OAuth, and configure it to fetch messages based on the parameters from step 2.</div></li>
-      <li><span class="step-num">4</span><div><strong>Format the response:</strong> Add a Code or Set node to format the email results as clean text Claude can reason over.</div></li>
-      <li><span class="step-num">5</span><div><strong>Get the MCP endpoint:</strong> n8n gives you an HTTPS endpoint. Copy it.</div></li>
-      <li><span class="step-num">6</span><div><strong>Connect to Claude Desktop:</strong> Add the endpoint to your <code>claude_desktop_config.json</code> under <code>mcpServers</code>. Restart Claude Desktop.</div></li>
-    </div>
-
-    <div class="skill-file">
-      <div class="skill-file-header">
-        <div class="dot dot-red"></div>
-        <div class="dot dot-amber"></div>
-        <div class="dot dot-green"></div>
-        <span class="skill-file-name">claude_desktop_config.json</span>
-      </div>
-      <div class="skill-file-body">{
-  <span class="str">"mcpServers"</span>: {
-    <span class="str">"gmail-n8n"</span>: {
-      <span class="str">"command"</span>: <span class="str">"npx"</span>,
-      <span class="str">"args"</span>: [<span class="str">"-y"</span>, <span class="str">"@modelcontextprotocol/server-http-transport"</span>],
-      <span class="str">"env"</span>: {
-        <span class="str">"MCP_SERVER_URL"</span>: <span class="str">"https://your-n8n-instance.com/mcp/your-workflow-id"</span>
-      }
-    }
-  }
-}</div>
-    </div>
-
-    <p>Once configured, I can say: "Check my Gmail for unread messages labelled <code>client-feedback</code> and summarise the key requests." Claude calls the n8n workflow, n8n fetches from Gmail via the API, formats the results, and returns them to Claude — all in one seamless response. No code running on my machine, no custom server to maintain. Just a visual workflow in n8n and a config entry.</p>
-
-    <div class="callout">
-      <strong>Developer Insight:</strong> The real power here is composability. Once your n8n MCP server is running, you can add more tools to the same workflow — check Jira tickets, send Slack messages, query an internal API. Each new n8n node becomes a new capability Claude can invoke.
-    </div>
-
-    <blockquote>"The best MCP server is the one you built in an afternoon and haven't had to think about since."</blockquote>
+  <!-- SECTION 07 -->
+  <section class="section" id="pricing">
+    <div class="section-label">07 / 14</div>
+    <h2>Pricing & Plans Breakdown</h2>
+    <p>I appreciate that the course dedicates a full section to pricing — it's one of those things that's genuinely confusing until someone maps it out clearly. As a developer thinking about team adoption, understanding the plan tiers is as important as understanding the features.</p>
+    <p>The key decision point for most developers is whether the Pro plan's higher usage limits and priority access justify the cost versus the free tier. For anyone using Claude daily — and especially for teams using Projects and Cowork features — the answer is almost always yes. The course also covers the Team and Enterprise tiers, which are relevant if you're evaluating Claude for wider internal adoption at your company.</p>
+    <div class="callout"><strong>Developer Insight:</strong> If you're evaluating Claude for a small team, the Team plan's shared Projects and collaborative context features are the real value proposition — not just the usage increase. Think of it as paying for a shared AI workspace, not just individual subscriptions.</div>
   </section>
 
   <hr class="section-rule" />
 
-  <!-- SECTION 5 -->
-  <section class="section" id="s5">
-    <div class="section-label">05 / 06</div>
-    <h2>Supabase MCP: Querying Your Database Live</h2>
-
-    <p>There's a particular kind of frustration that every backend developer knows: you're mid-conversation explaining a data issue, and someone asks "so what does the actual data look like right now?" And you have to stop, open a database client, write a query, format the output, copy it back into the conversation. It breaks the flow every single time. The Supabase MCP server solves this.</p>
-
-    <p><strong>Supabase</strong> is an open-source Firebase alternative built on PostgreSQL. It has an official MCP server that lets Claude query your Supabase project directly — reading table schemas, running SELECT queries, and returning live results into your Claude conversation.</p>
-
-    <div class="feature-grid">
-      <div class="feature-card">
-        <div class="feature-card-icon">🗄️</div>
-        <h4>Live Schema Inspection</h4>
-        <p>Ask Claude what tables exist, what columns they have, what relationships are defined.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-card-icon">🔍</div>
-        <h4>Natural Language Queries</h4>
-        <p>Describe what data you need in plain English. Claude writes and runs the SQL for you.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-card-icon">📊</div>
-        <h4>Instant Analysis</h4>
-        <p>Get results back in Claude's context — then ask follow-up questions, spot anomalies, build reports.</p>
-      </div>
-    </div>
-
-    <p>Setting it up is straightforward. The Supabase MCP server is available via npm. You add it to your Claude Desktop config with your Supabase project URL and service role key, and you're live.</p>
-
-    <div class="skill-file">
-      <div class="skill-file-header">
-        <div class="dot dot-red"></div>
-        <div class="dot dot-amber"></div>
-        <div class="dot dot-green"></div>
-        <span class="skill-file-name">claude_desktop_config.json (Supabase)</span>
-      </div>
-      <div class="skill-file-body">{
-  <span class="str">"mcpServers"</span>: {
-    <span class="str">"supabase"</span>: {
-      <span class="str">"command"</span>: <span class="str">"npx"</span>,
-      <span class="str">"args"</span>: [
-        <span class="str">"-y"</span>,
-        <span class="str">"@supabase/mcp-server-supabase@latest"</span>,
-        <span class="str">"--supabase-url"</span>, <span class="str">"https://your-project.supabase.co"</span>,
-        <span class="str">"--supabase-key"</span>, <span class="str">"your-service-role-key"</span>
-      ]
-    }
-  }
-}</div>
-    </div>
-
-    <p>In practice, this changes how I debug data issues entirely. Instead of "let me check the database and get back to you", I can now ask Claude: "Show me all users who signed up in the last 7 days but haven't completed their profile" — and get the answer in the same conversation where I'm designing the follow-up email workflow. The cognitive overhead of context-switching to a DB client simply disappears.</p>
-
-    <p>One important note from a security perspective: use a read-only Supabase role for MCP access in development, and be thoughtful about what service role permissions you grant. Claude operates with the permissions you give it — so scope them appropriately.</p>
-
-    <div class="highlight-box">
-      <strong>Try this:</strong> After connecting Supabase MCP, ask Claude to "describe the schema of my most important tables and suggest any missing indexes or relationships." You'll get a database review in seconds that would have taken a senior DBA 20 minutes.
-    </div>
+  <!-- SECTION 08 -->
+  <section class="section" id="cowork">
+    <div class="section-label">08 / 14</div>
+    <h2>Phase 2: Cowork Setup</h2>
+    <p>Phase 2 begins with Cowork — and I want to be clear about what this is, because the name undersells it. Cowork isn't a chat feature or an add-on. It's Claude's agentic layer: the ability to operate on your local file system, run multi-step workflows, interact with your actual documents and folders, and execute tasks that persist beyond a single conversation.</p>
+    <p>Setting up Cowork involves installing the Claude desktop app and configuring it to have the access it needs. The course walks through this carefully — which permissions to grant, how to verify the connection, and how to sanity-check that Cowork is running correctly before you start giving it real tasks.</p>
+    <ul class="step-list">
+      <li><span class="step-num">1</span><div>Install Claude Desktop and sign in with your account</div></li>
+      <li><span class="step-num">2</span><div>Enable Cowork and grant folder access permissions</div></li>
+      <li><span class="step-num">3</span><div>Create a working directory — a folder Claude will use as its workspace</div></li>
+      <li><span class="step-num">4</span><div>Run a simple test task ("list files in this folder") to confirm access is working</div></li>
+      <li><span class="step-num">5</span><div>Set up your <code>CLAUDE.md</code> file (covered in a later section)</div></li>
+    </ul>
+    <div class="callout"><strong>Developer Insight:</strong> Before you give Cowork access to sensitive folders, spend 10 minutes on the sandbox test tasks the course recommends. Understanding what Claude can and can't do in your file system before giving it real work to do is worth the setup time.</div>
   </section>
 
   <hr class="section-rule" />
 
-  <!-- SECTION 6 -->
-  <section class="section" id="s6">
-    <div class="section-label">06 / 06</div>
-    <h2>Summary, What's Coming Next &amp; Claude Coworking Preview</h2>
-
-    <p>If I had to compress everything I've learned across these six topics into a single sentence, it would be this: <em>Claude is no longer a chat interface — it's becoming an integration layer for your entire development workflow.</em></p>
-
-    <p>Let me recap what we covered and why each piece matters:</p>
-
+  <!-- SECTION 09 -->
+  <section class="section" id="five-levels">
+    <div class="section-label">09 / 14</div>
+    <h2>The 5 Levels: Projects → Skills → Cowork</h2>
+    <p>This section reframes everything. The course presents a mental model for Claude maturity — five levels of how deeply you're integrating Claude into your workflow. It starts from basic chat (Level 1) and builds all the way to Cowork-powered autonomous task execution (Level 5).</p>
     <div class="feature-grid">
       <div class="feature-card">
-        <div class="feature-card-icon">📧</div>
-        <h4>Connectors</h4>
-        <p>Gmail and Drive in context. No copy-paste. Live data in every conversation.</p>
+        <div class="feature-card-icon">💬</div>
+        <h4>Level 1–2: Basic Chat</h4>
+        <p>One-off conversations. Good for quick lookups, code reviews, email drafts.</p>
       </div>
       <div class="feature-card">
-        <div class="feature-card-icon">🖥️</div>
-        <h4>Extensions</h4>
-        <p>Desktop app + Chrome extension + PDF tools. Claude moves out of the tab and into your OS.</p>
+        <div class="feature-card-icon">🗂️</div>
+        <h4>Level 3: Projects</h4>
+        <p>Persistent context across conversations. Your tech stack, team norms, and project state are always loaded.</p>
       </div>
       <div class="feature-card">
-        <div class="feature-card-icon">🔌</div>
-        <h4>MCP Protocol</h4>
-        <p>The open standard that makes all of this composable, extensible, and developer-buildable.</p>
+        <div class="feature-card-icon">🛠️</div>
+        <h4>Level 4: Skills</h4>
+        <p>Reusable instruction sets that make Claude an expert in specific workflows — content creation, code review, data analysis.</p>
       </div>
       <div class="feature-card">
         <div class="feature-card-icon">⚙️</div>
-        <h4>n8n Automation</h4>
-        <p>Custom MCP servers without writing a server. Visual workflows, live Gmail access.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-card-icon">🗄️</div>
-        <h4>Supabase MCP</h4>
-        <p>Natural language database queries. Live schema inspection. Zero context-switching.</p>
+        <h4>Level 5: Cowork</h4>
+        <p>Agentic file system access. Claude operates on your actual documents, folders, and data — not just in the chat window.</p>
       </div>
     </div>
-
-    <p>What's coming next? Anthropic has been previewing <strong>Claude Coworking</strong> — a capability where multiple Claude instances collaborate on tasks in parallel, each with their own tools and context, coordinated by an orchestrator. Think of it as a small AI team rather than a single assistant. Early demos show Claude agents dividing a complex refactor across files, reviewing each other's outputs, and reconciling conflicts — in ways that mirror how a human dev team would tackle the same problem.</p>
-
-    <p>I'm also watching the MCP ecosystem closely. The number of community-built MCP servers is growing fast — Jira, Linear, Notion, GitHub, Figma, Stripe. Every new server is a new capability Claude inherits. As someone working in Java/Spring Boot with a typical enterprise toolchain, the prospect of Claude being able to touch Jira tickets, GitHub PRs, and our internal API in a single prompt is genuinely exciting.</p>
-
-    <blockquote>"The developers who will get the most out of AI aren't the ones who prompt best — they're the ones who integrate deepest."</blockquote>
+    <blockquote>"Most developers are living at Level 2. The jump to Level 3 alone would save them hours every week."</blockquote>
   </section>
 
-  <!-- BIGGER PICTURE -->
-  <div class="bigger-picture">
-    <h2>The Bigger Picture</h2>
-    <p>Six months ago, I used Claude as a smarter search engine and code reviewer. Today, it reads my emails, queries my database, automates my workflows, and works across every tool in my stack via MCP. The trajectory is clear: the AI tools that win won't be the most capable in isolation — they'll be the most deeply connected to where your actual work lives.</p>
-    <p>If you take one thing from this article, let it be this: MCP is the unlock. Everything else — connectors, extensions, Supabase, n8n — is built on top of that one open standard. Understand MCP, and you understand the future of AI-augmented development.</p>
-  </div>
+  <hr class="section-rule" />
 
-  <!-- CTA -->
+  <!-- SECTION 10 -->
+  <section class="section" id="pdf-dashboard">
+    <div class="section-label">10 / 14</div>
+    <h2>Project Demo: Any PDF → Dashboard (TCS Report)</h2>
+    <p>The course uses the TCS annual report as a live demo — and it's a genuinely impressive demonstration of what Projects + Cowork can do together. You hand Claude a dense, multi-hundred-page PDF, and the workflow produces a clean, interactive dashboard with KPIs, charts, and segment breakdowns.</p>
+    <p>What makes this powerful for me as a developer isn't the financial data — it's the pattern. The same workflow applies to any structured PDF: a client requirements document, a product specification, an API reference. Claude reads the document, extracts the structure, and builds a visual interface on top of it.</p>
+    <div class="highlight-box"><strong>Try this with your own work:</strong> Upload your project's technical specification PDF to Claude. Ask it to extract all the API endpoints, data models, and business rules, then generate a structured summary card for each. It turns a 60-page spec into something actually usable in a sprint planning meeting.</div>
+    <div class="callout"><strong>Developer Insight:</strong> The key prompt pattern is: "Here is a [document type]. Extract [specific elements]. Present them as [output format]." Being explicit about both what to extract and how to format the output is what makes the results immediately usable — not just interesting.</div>
+  </section>
+
+  <hr class="section-rule" />
+
+  <!-- SECTION 11 -->
+  <section class="section" id="claude-md">
+    <div class="section-label">11 / 14</div>
+    <h2>CLAUDE.md: Folder Instructions + Backup System + Logs</h2>
+    <p>This was one of my favourite discoveries in the entire course. <code>CLAUDE.md</code> is a plain text file you place in a folder that Cowork has access to. It acts as a standing instruction set for Claude whenever it works in that directory — persistent rules that don't need to be repeated in every conversation.</p>
+    <p>The course shows three primary use cases for <code>CLAUDE.md</code>: folder-level instructions ("always name output files with a date prefix"), a lightweight backup protocol ("before modifying any file, copy the original to /backup"), and an activity log ("append a one-line entry to log.txt after every task"). Together, they transform ad-hoc file operations into something that feels genuinely governed.</p>
+    <div class="skill-file">
+      <div class="skill-file-header">
+        <div class="dot dot-red"></div>
+        <div class="dot dot-amber"></div>
+        <div class="dot dot-green"></div>
+        <span class="skill-file-name">CLAUDE.md</span>
+      </div>
+      <div class="skill-file-body"><span class="cm"># Folder Instructions for Claude</span>
+
+<span class="kw">NAMING:</span> <span class="str">All output files must be prefixed with YYYY-MM-DD</span>
+<span class="kw">BACKUP:</span> <span class="str">Before modifying any file, copy original to /backup/</span>
+<span class="kw">LOGGING:</span> <span class="str">After each task, append one line to activity-log.txt:
+  Format: [timestamp] | [task] | [files modified] | [status]</span>
+<span class="kw">TONE:</span> <span class="str">When summarising documents, use bullet points. Max 10 bullets per doc.</span>
+<span class="kw">OUTPUT:</span> <span class="str">Always confirm before deleting any file.</span></div>
+    </div>
+    <blockquote>"CLAUDE.md is the difference between 'Claude did something to my files' and 'Claude followed my rules while working on my files.'"</blockquote>
+  </section>
+
+  <hr class="section-rule" />
+
+  <!-- SECTION 12 -->
+  <section class="section" id="mindnode">
+    <div class="section-label">12 / 14</div>
+    <h2>MindNode via Cowork: Deep Research → Mindmap</h2>
+    <p>I'll admit I was sceptical about this one. Mindmapping has always felt like a thing I should do more but never actually do. The course demo changed my view entirely — not because of the mindmap itself, but because of what Cowork does before generating it.</p>
+    <p>The workflow: give Claude a research topic, let it run a multi-step deep research cycle (searching, synthesising, cross-referencing), then export the structured output as a MindNode-compatible file. The result is a properly organised mindmap with branches, sub-branches, and source annotations — not a flat list dressed up as a tree.</p>
+    <div class="callout"><strong>Developer Insight:</strong> I used this for a technical spike on distributed tracing in our Spring Boot microservices. Instead of reading five articles and trying to hold all of it in my head, I ran the workflow and got a structured mindmap I could share with my team in our design review. Saved at least 2 hours of note-taking and reorganising.</div>
+  </section>
+
+  <hr class="section-rule" />
+
+  <!-- SECTION 13 -->
+  <section class="section" id="files-folders">
+    <div class="section-label">13 / 14</div>
+    <h2>Organizing Files & Folders (OCR-Based, Bulk)</h2>
+    <p>This section genuinely impressed me, because it solved a problem I'd quietly given up on: my "Downloads" folder and the various "working" folders on my machine that accumulate scanned PDFs, screenshots, and renamed files with no consistent naming convention.</p>
+    <p>Cowork can read files — including images and scanned PDFs via OCR — and then rename, reorganise, and sort them based on their actual content. Not by filename. By <em>what's inside them</em>. The course demonstrates this on a bulk folder of mixed documents and shows Claude correctly categorising and renaming them in a single workflow run.</p>
+    <ul class="step-list">
+      <li><span class="step-num">1</span><div>Point Cowork at a folder of unorganised files</div></li>
+      <li><span class="step-num">2</span><div>Claude reads each file (text extraction + OCR for images/scans)</div></li>
+      <li><span class="step-num">3</span><div>Claude proposes a renamed/reorganised structure — you review before it executes</div></li>
+      <li><span class="step-num">4</span><div>Files are moved, renamed, and sorted according to the proposed plan</div></li>
+    </ul>
+    <div class="callout"><strong>Developer Insight:</strong> Set up a <code>CLAUDE.md</code> in the target folder before running bulk operations. Defining your naming convention in advance means Claude applies it consistently — rather than making judgment calls you might not agree with after the fact.</div>
+  </section>
+
+  <hr class="section-rule" />
+
+  <!-- SECTION 14 -->
+  <section class="section" id="csv">
+    <div class="section-label">14 / 14</div>
+    <h2>CSV Edit, Clean & Visual Dashboard</h2>
+    <p>The final section covers what might be the most immediately practical Cowork workflow for anyone in a team environment: working with CSV data. The course covers two distinct use cases — editing and cleaning a CSV (for sharing with a colleague or accountant), and generating a full visual dashboard from a CSV file.</p>
+    <p>The cleaning workflow is particularly useful for anyone who regularly exports data from Jira, GitHub, or internal tools. These exports are rarely clean — inconsistent column names, mixed date formats, blank rows, duplicate entries. Cowork can audit the file, report what it finds, and then clean it according to rules you define.</p>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="feature-card-icon">🧹</div>
+        <h4>CSV Clean</h4>
+        <p>Remove blanks, fix date formats, standardise column names, deduplicate rows — all in one pass.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-card-icon">📊</div>
+        <h4>Visual Dashboard</h4>
+        <p>Claude reads the CSV and generates a full HTML dashboard with charts, KPIs, and trend lines — ready to open in any browser.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-card-icon">📤</div>
+        <h4>Accountant-Ready Export</h4>
+        <p>Produce a clean, well-formatted CSV alongside a summary sheet — shareable without further manual work.</p>
+      </div>
+    </div>
+    <blockquote>"I used to spend Friday afternoons cleaning Jira exports before sending them to the project manager. Now that's a 3-minute Cowork task."</blockquote>
+  </section>
+
+  <hr class="section-rule" />
+
+  <!-- BIGGER PICTURE -->
+  <section class="section" id="bigger-picture">
+    <div class="section-label">Final Thoughts</div>
+    <h2>The Bigger Picture</h2>
+    <p>Going through this course properly — not skimming, but actually working through each section with real tasks — changed something fundamental about how I think about my workday. The shift isn't "I now use AI for more tasks." It's subtler than that.</p>
+    <p>The real change is in what I consider worth my attention. The mechanical work — formatting data, deploying prototypes, renaming files, restructuring documents — none of that feels like something I should be doing anymore. Cowork handles it. That frees up cognitive space for the things that actually require a developer's judgment: architecture decisions, system design, code review, client conversations.</p>
+    <p>If you're a developer who's been using Claude occasionally and wondering why it isn't transforming your workflow — the answer is almost certainly that you haven't set up Projects, haven't written Skills, and haven't configured Cowork. Once those three things are in place, you're not using Claude. You're working with it.</p>
+    <div class="callout"><strong>Where to start:</strong> Don't try to implement everything at once. Start with one Claude Project for your main work context. Spend a week using it daily. Then add one Skill for the workflow you repeat most often. That alone will put you at Level 4 — and you'll feel the difference immediately.</div>
+  </section>
+
+  <!-- CTA BOX -->
   <div class="cta-box">
-    <h3>Found this useful?</h3>
-    <p>Drop a comment with the first MCP server you plan to build — I'd love to hear what integrations you're most excited about. And if you're building with Claude Projects or Skills, let's connect on LinkedIn.</p>
+    <h3>Working Through Your Own Claude Setup?</h3>
+    <p>Drop a comment below — I'm especially curious which Cowork workflow surprised you most, and whether you're using Projects for solo work or with a team. Let's compare notes.</p>
   </div>
 
   <!-- TAGS -->
@@ -661,18 +643,16 @@
     <span class="tag">Programming</span>
     <span class="tag">Technology</span>
     <span class="tag">Claude AI</span>
-    <span class="tag">MCP Server</span>
-    <span class="tag">n8n</span>
-    <span class="tag">Supabase</span>
+    <span class="tag">Anthropic</span>
+    <span class="tag">Cowork</span>
     <span class="tag">Developer Tools</span>
-    <span class="tag">AI Automation</span>
-    <span class="tag">Model Context Protocol</span>
+    <span class="tag">AI Workflows</span>
+    <span class="tag">Artifacts</span>
+    <span class="tag">MCP</span>
   </div>
 
   <!-- FOOTER -->
-  <div class="footer">
-    Written by Lakshay · Software Developer · April 2026
-  </div>
+  <div class="footer">Written by Lakshay · Software Developer · July 2025</div>
 
 </div>
 </body>
